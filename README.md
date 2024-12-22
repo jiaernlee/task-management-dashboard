@@ -69,4 +69,6 @@ A simple task management application built with React that allows users to prior
 
 ## Contributors
 
-- [Your Name](https://github.com/your-github-username)
+- [Jia Ern](https://github.com/jiaernlee)
+- [Joan You](https://github.com/Coral-Reefs)
+- [Ping Her](https://github.com/pingher)
