@@ -30,7 +30,7 @@ A simple task management application built with React that allows users to prior
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone [<repository-url>](https://github.com/jiaernlee/task-management-dashboard.git)
    cd task-manager
    ```
 
@@ -69,6 +69,6 @@ A simple task management application built with React that allows users to prior
 
 ## Contributors
 
-- [Jia Ern](https://github.com/jiaernlee)
 - [Joan You](https://github.com/Coral-Reefs)
 - [Ping Her](https://github.com/pingher)
+- [Jia Ern](https://github.com/jiaernlee)
