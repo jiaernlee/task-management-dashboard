@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { Button, ListGroup, Card, Badge, Alert } from "react-bootstrap";
 import { GrAdd } from "react-icons/gr";
-import { ListGroup, Button } from "react-bootstrap";
 import { GoCheck, GoX } from "react-icons/go";
 import { CiEdit } from "react-icons/ci";
 import AddModal from "./components/add-modal";
@@ -53,69 +53,101 @@ function App() {
     const diff = due - now;
 
     if (diff <= 0) {
-      return "Overdue";
+      return <Badge bg="danger">Overdue</Badge>;
     }
 
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const days = Math.floor(hours / 24);
 
     if (days > 0) {
-      return `${days} day${days > 1 ? "s" : ""} left`;
+      return (
+        <Badge bg="info">{`${days} day${days > 1 ? "s" : ""} left`}</Badge>
+      );
     } else if (hours > 0) {
-      return `${hours} hour${hours > 1 ? "s" : ""} left`;
+      return (
+        <Badge bg="warning">{`${hours} hour${
+          hours > 1 ? "s" : ""
+        } left`}</Badge>
+      );
     } else {
       const minutes = Math.floor(diff / (1000 * 60));
-      return `${minutes} minute${minutes > 1 ? "s" : ""} left`;
+      return (
+        <Badge bg="danger">{`${minutes} minute${
+          minutes > 1 ? "s" : ""
+        } left`}</Badge>
+      );
     }
   };
 
   return (
-    <div className="p-3">
-      <h2>Task Management Dashboard</h2>
-      <div>
+    <div className="container py-5">
+      <h2 className="text-center mb-4">Task Management Dashboard</h2>
+      <div className="d-flex justify-content-end mb-3">
         <Button variant="primary" onClick={() => setShowAddModal(true)}>
-          Add Task <GrAdd />
+          <GrAdd className="me-2" />
+          Add Task
         </Button>
       </div>
 
       {priorities.map((p) => (
-        <div key={p} className="mt-5">
-          <h6>{p} priority</h6>
-          <ListGroup as="ul" variant="flush">
+        <div key={p} className="mt-4">
+          <h5>
+            <Badge
+              bg={
+                p === "high" ? "danger" : p === "medium" ? "warning" : "success"
+              }
+              style={{ fontSize: "1.05rem", padding: "0.5rem 1rem" }}
+            >
+              {p.charAt(0).toUpperCase() + p.slice(1)} Priority
+            </Badge>
+          </h5>
+          <div className="task-list mt-3">
             {allTasks
               .filter((task) => task.priority === p)
               .map((task) => (
-                <ListGroup.Item
-                  as="li"
+                <Card
                   key={task.id}
-                  className="gap-5 d-flex align-items-center"
-                  style={{
-                    textDecoration: task.completed ? "line-through" : "none",
-                    opacity: task.completed ? 0.7 : 1,
-                  }}
+                  className="mb-3 shadow-sm"
+                  style={{ opacity: task.completed ? 0.7 : 1 }}
                 >
-                  <div>
-                    <strong>{task.name}</strong>
-                    <br />
-                    <small>Due: {task.dueDate}</small>
-                    <br />
-                    <small style={{ color: "red" }}>
+                  <Card.Body className="d-flex align-items-center justify-content-between">
+                    <div>
+                      <Card.Title className="mb-1">{task.name}</Card.Title>
+                      <Card.Subtitle className="text-muted">
+                        Due: {task.dueDate}
+                      </Card.Subtitle>
                       {calculateDueTime(task.dueDate)}
-                    </small>
-                  </div>
-                  <div>
-                    <GoCheck onClick={() => handleComplete(task.id)} />
-                    <GoX onClick={() => handleDelete(task.id)} />
-                    <CiEdit
-                      onClick={() => {
-                        setEditTask(task);
-                        setShowEditModal(true);
-                      }}
-                    />
-                  </div>
-                </ListGroup.Item>
+                    </div>
+                    <div className="task-actions d-flex gap-3">
+                      <Button
+                        variant="success"
+                        size="sm"
+                        onClick={() => handleComplete(task.id)}
+                      >
+                        <GoCheck />
+                      </Button>
+                      <Button
+                        variant="warning"
+                        size="sm"
+                        onClick={() => {
+                          setEditTask(task);
+                          setShowEditModal(true);
+                        }}
+                      >
+                        <CiEdit />
+                      </Button>
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        onClick={() => handleDelete(task.id)}
+                      >
+                        <GoX />
+                      </Button>
+                    </div>
+                  </Card.Body>
+                </Card>
               ))}
-          </ListGroup>
+          </div>
         </div>
       ))}
 
